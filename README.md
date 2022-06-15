@@ -2,6 +2,8 @@
 
 Angular language server client for Neovim LSP
 
+![Kapture 2022-06-15 at 17 03 40](https://user-images.githubusercontent.com/19226858/173929937-e2b6db50-0ce7-451b-9e61-7e7a88696145.gif)
+
 ## Getting started
 
 ### Installation
