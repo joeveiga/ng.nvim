@@ -1,10 +1,18 @@
 # ng.nvim
 
-Angular language server client for Neovim LSP
+Angular language server client for Neovim LSP. This extension adds extra commands exposed by [vscode-ng-language-server](https://github.com/angular/vscode-ng-language-service), such as:
+
+ - [x] Go to template for component under cursor 
+ - [x] Go to component(s) for template
+ - [x] Display template typecheck block
 
 ![Kapture 2022-06-15 at 17 03 40](https://user-images.githubusercontent.com/19226858/173929937-e2b6db50-0ce7-451b-9e61-7e7a88696145.gif)
 
 ## Getting started
+
+### Required dependencies
+
+This extension **WILL NOT** config an angular language server (not yet, at least). If you use [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) you can follow [this steps](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md#angularls).
 
 ### Installation
 
