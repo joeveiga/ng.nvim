@@ -31,6 +31,59 @@ vim.api.nvim_set_keymap("n", "<leader>ac", '<cmd>lua require("ng").goto_componen
 vim.api.nvim_set_keymap("n", "<leader>aT", '<cmd>lua require("ng").get_template_tcb()<cr>', opts)
 ```
 
+### FAQ
+
+<details>
+ <summary>How can I restart the angular language service?</summary>
+
+ <br>
+ 
+ VSCode provides a `Angular: Restart Angular Language Server` command to restart the service. Unfortunately `ng.nvim` does not
+ manage the lifecycle of the server at the moment. However, you can use [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) to
+ accomplish this with the `:LspRestart` command.
+
+ ![Kapture 2022-06-15 at 21 59 23](https://user-images.githubusercontent.com/19226858/173974953-68cc17a5-1684-43f1-80cb-78b6cf95ae8e.gif)
+
+</details>
+
+<details>
+ <summary>Can I access the angular server logs?</summary>
+
+ <br>
+ 
+ I don't plan to support VSCode's `Angular: Open Language Server Log` command at the moment (at least not the functionality to automatically
+ enable logging). PRs are welcome though ;). If you want to do this via lspconfig, you can add it to your `angularls` config cmd like so:
+ 
+ ```lua
+ local cmd = {
+   "ngserver",
+   "--stdio",
+   "--tsProbeLocations",
+   "<typescript_path>",
+   "--ngProbeLocations",
+   "<angular_language_service_path>",
+   -- THESE ARE THE RELEVANT OPTIONS
+   "--logFile",
+   "<path_to_logs>/nglangsvc.log",
+   "--logVerbosity",
+   "verbose" -- terse|normal|verbose|requestTime
+ }
+
+ lspconfig.angularls.setup({
+   cmd = cmd,
+   capabilities = capabilities,
+   on_new_config = function(new_config, new_root_dir)
+     new_config.cmd = cmd
+   end
+ })
+ 
+ -- ...
+ -- you can then add a mapping to open the file
+ vim.api.nvim_set_keymap("n", "<leader>al", '<cmd>view <path_to_logs>/nglangsvc.log<cr>', opts)
+ ```
+
+</details>
+
 ## Related Projects
 
 * [vscode-ng-language-server](https://github.com/angular/vscode-ng-language-service)
