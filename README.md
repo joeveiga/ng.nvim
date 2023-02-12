@@ -26,9 +26,9 @@ use { 'joeveiga/ng.nvim'}
 
 ```lua
 local opts = { noremap = true, silent = true }
-vim.api.nvim_set_keymap("n", "<leader>at", '<cmd>lua require("ng").goto_template_for_component()<cr>', opts)
-vim.api.nvim_set_keymap("n", "<leader>ac", '<cmd>lua require("ng").goto_component_with_template_file()<cr>', opts)
-vim.api.nvim_set_keymap("n", "<leader>aT", '<cmd>lua require("ng").get_template_tcb()<cr>', opts)
+vim.keymap.set("n", "<leader>at", '<cmd>lua require("ng").goto_template_for_component()<cr>', opts)
+vim.keymap.set("n", "<leader>ac", '<cmd>lua require("ng").goto_component_with_template_file()<cr>', opts)
+vim.keymap.set("n", "<leader>aT", '<cmd>lua require("ng").get_template_tcb()<cr>', opts)
 ```
 
 ### FAQ
