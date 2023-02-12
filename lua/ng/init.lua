@@ -25,7 +25,7 @@ local tcb_content_provider = {
   end,
 
   show = function(self, ranges)
-    vim.cmd('tabnew ' .. self._uri)
+    vim.cmd.tabnew(self._uri)
     if ranges and #ranges ~= 0 then
       for _, range in ipairs(ranges) do
         vim.highlight.range(
@@ -67,7 +67,7 @@ M.goto_component_with_template_file = function()
           title = 'Language Server',
           items = vim.lsp.util.locations_to_items(result, 'utf-8'),
         })
-        vim.api.nvim_command('copen')
+        vim.cmd.copen()
       end
     end
   end)
