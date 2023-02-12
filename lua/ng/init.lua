@@ -3,11 +3,13 @@ local req = require('ng.requests')
 local tcb_content_provider = {
   _buffer = nil,
   _uri = nil,
+  _ns = nil,
 
   update = function(self, uri, content)
     if not self._buffer or not vim.api.nvim_buf_is_loaded(self._buffer) then
       self._buffer = vim.api.nvim_create_buf(false, true)
       vim.api.nvim_buf_set_option(self._buffer, 'buftype', 'nofile')
+      self._ns = vim.api.nvim_create_namespace('ng.nvim')
     end
 
     -- TODO: find a better way to do this (if it's even needed)
@@ -25,17 +27,15 @@ local tcb_content_provider = {
   show = function(self, ranges)
     vim.cmd('tabnew ' .. self._uri)
     if ranges and #ranges ~= 0 then
-      P(ranges)
-      -- TODO: fix this
-      -- for _, range in ipairs(ranges) do
-      -- 	vim.highlight.range(
-      -- 		self._buffer,
-      -- 		-1,
-      -- 		"Visual",
-      -- 		{ range.start.line, range.start.character },
-      -- 		{ range["end"].line, range["end"].character }
-      -- 	)
-      -- end
+      for _, range in ipairs(ranges) do
+        vim.highlight.range(
+          self._buffer,
+          self._ns,
+          'Visual',
+          { range.start.line, range.start.character },
+          { range['end'].line, range['end'].character }
+        )
+      end
 
       vim.api.nvim_win_set_cursor(0, { ranges[1].start.line + 1, ranges[1].start.character })
     end
