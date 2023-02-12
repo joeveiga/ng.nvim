@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="300" height="300" src="logo.png">
+</p>
+
 # ng.nvim
 
 Angular language server client for Neovim LSP. This extension adds extra commands exposed by [vscode-ng-language-server](https://github.com/angular/vscode-ng-language-service), such as:
