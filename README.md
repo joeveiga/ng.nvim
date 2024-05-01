@@ -36,6 +36,19 @@ vim.keymap.set("n", "<leader>ac", ng.goto_component_with_template_file, opts)
 vim.keymap.set("n", "<leader>aT", ng.get_template_tcb, opts)
 ```
 
+By default, both `goto_component_with_template_file` and `goto_template_for_component` will open the buffer in the same window where the command was executed, regardless of whether the target location is already open in a different window.
+If you want to jump to the existing window, you can pass the `{ reuse_window = true }` option to the function:
+
+```lua
+-- ...
+vim.keymap.set("n", "<leader>at", function()
+  ng.goto_template_for_component({ reuse_window = true })
+end, opts)
+```
+Here is an example of the difference in behavior:
+
+![Kapture 2024-04-30 at 23 21 00](https://github.com/joeveiga/ng.nvim/assets/19226858/a8adb22c-9d84-4563-8821-fc4ed4047681)
+
 ### FAQ
 
 <details>
@@ -59,7 +72,6 @@ vim.keymap.set("n", "<leader>aT", ng.get_template_tcb, opts)
  I don't plan to support VSCode's `Angular: Open Language Server Log` command at the moment (at least not the functionality to automatically
  enable logging). PRs are welcome though ;). If you want to do this via lspconfig, you can add it to your `angularls` config cmd like so:
 
-<!-- prettier-ignore -->
  ```lua
 local cmd = {
   "ngserver",

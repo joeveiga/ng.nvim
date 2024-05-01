@@ -45,23 +45,33 @@ local tcb_content_provider = {
 local M = {}
 
 --- Command finds the template for a component.
-M.goto_template_for_component = function()
+--
+---@param opts table Keys:
+--     reuse_window boolean: Jump to existing window if buffer is already open.
+M.goto_template_for_component = function(opts)
+  opts = opts or {}
+  local reuse_window = opts.reuse_window or false
   req.get_template_location_for_component(function(err, result)
     if result then
-      vim.lsp.util.jump_to_location(result, 'utf-8') -- TODO: check encoding
+      vim.lsp.util.jump_to_location(result, 'utf-8', reuse_window) -- TODO: check encoding
     end
   end)
 end
 
 --- Command finds components which reference an external template in
 --- their `templateUrl`s.
-M.goto_component_with_template_file = function()
+--
+---@param opts table Keys:
+--     reuse_window boolean: Jump to existing window if buffer is already open.
+M.goto_component_with_template_file = function(opts)
+  opts = opts or {}
+  local reuse_window = opts.reuse_window or false
   req.get_component_for_open_external_template(function(err, result)
-    if result then
+    if result and #result ~= 0 then
       -- If there is more than one component that references the template, show them all. Otherwise
       -- go to the component immediately.
       if #result == 1 then
-        vim.lsp.util.jump_to_location(result[1], 'utf-8') -- TODO: check encoding
+        vim.lsp.util.jump_to_location(result[1], 'utf-8', reuse_window) -- TODO: check encoding
       else
         vim.fn.setqflist({}, ' ', {
           title = 'Language Server',
