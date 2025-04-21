@@ -8,7 +8,7 @@ local tcb_content_provider = {
   update = function(self, uri, content)
     if not self._buffer or not vim.api.nvim_buf_is_loaded(self._buffer) then
       self._buffer = vim.api.nvim_create_buf(false, true)
-      vim.api.nvim_buf_set_option(self._buffer, 'buftype', 'nofile')
+      vim.api.nvim_set_option_value('buftype', 'nofile', { buf = self._buffer })
       self._ns = vim.api.nvim_create_namespace('ng.nvim')
     end
 
@@ -17,11 +17,11 @@ local tcb_content_provider = {
     if self._uri ~= uri then
       self._uri = uri
       vim.api.nvim_buf_set_name(self._buffer, self._uri)
-      vim.api.nvim_buf_set_option(self._buffer, 'filetype', 'typescript')
+      vim.api.nvim_set_option_value('filetype', 'typescript', { buf = self._buffer })
     end
 
     vim.api.nvim_buf_set_lines(self._buffer, 0, -1, false, vim.fn.split(content, '\n'))
-    vim.api.nvim_buf_set_option(self._buffer, 'modified', false)
+    vim.api.nvim_set_option_value('modified', false, { buf = self._buffer })
   end,
 
   show = function(self, ranges)
@@ -53,7 +53,7 @@ M.goto_template_for_component = function(opts)
   local reuse_window = opts.reuse_window or false
   req.get_template_location_for_component(function(err, result)
     if result then
-      vim.lsp.util.jump_to_location(result, 'utf-8', reuse_window) -- TODO: check encoding
+      vim.lsp.util.show_document(result, 'utf-8', { reuse_win = reuse_window }) -- TODO: get encoding from client
     end
   end)
 end
@@ -71,7 +71,7 @@ M.goto_component_with_template_file = function(opts)
       -- If there is more than one component that references the template, show them all. Otherwise
       -- go to the component immediately.
       if #result == 1 then
-        vim.lsp.util.jump_to_location(result[1], 'utf-8', reuse_window) -- TODO: check encoding
+        vim.lsp.util.show_document(result[1], 'utf-8', { reuse_win = reuse_window }) -- TODO: get encoding from client
       else
         vim.fn.setqflist({}, ' ', {
           title = 'Language Server',

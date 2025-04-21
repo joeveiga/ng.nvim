@@ -1,7 +1,9 @@
 local M = {}
 
 local execute_command = function(command, callback)
-  vim.lsp.buf_request(0, command, vim.lsp.util.make_position_params(0), callback)
+  vim.lsp.buf_request(0, command, function(client, bufnr)
+    return vim.lsp.util.make_position_params(0, client.offset_encoding)
+  end, callback)
 end
 
 M.get_template_location_for_component = function(callback)
